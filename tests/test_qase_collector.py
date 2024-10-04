@@ -12,5 +12,5 @@ def test_get_test_cases():
 
 def test_get_number_of_test_cases():
     collector = QaseCollector('https://api.qase.io', EnvVars().qase_api_token, 'MRCQA')
-    result = collector.get_number_of_test_cases(type='smoke', status='actual', automation='automated')
+    result = collector.get_number_of_test_cases(type='smoke', status='actual', automation='is-not-automated,to-be-automated')
     print(result)
