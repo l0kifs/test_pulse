@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class EnvVars(BaseSettings):
@@ -7,10 +7,5 @@ class EnvVars(BaseSettings):
     qase_api_token: str
     github_token: str
     github_repo: str
-
-    class Config:
-        env_file = '../.env'
-
-
-def get_env_vars():
-    return EnvVars()
+        
+    model_config = SettingsConfigDict(env_file='../.env')
