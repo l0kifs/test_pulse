@@ -1,8 +1,8 @@
 from prometheus_client import start_http_server, Gauge, CollectorRegistry
 import time
 
-from app.config.env_vars import EnvVars
-from app.metrics.qase_collector import QaseCollector
+from config.env_vars import EnvVars
+from metrics.qase_collector import QaseCollector
 
 registry = CollectorRegistry()
 tests_automated_smoke = Gauge('tests_automated_smoke', 'Number of automated smoke tests', registry=registry)
