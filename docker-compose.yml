@@ -1,3 +1,6 @@
+# Docker-compose run command
+# docker-compose -p test_pulse up -d --build
+
 version: '3'
 services:
   python-service:
