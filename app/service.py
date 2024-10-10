@@ -10,10 +10,10 @@ tests_manual_smoke = Gauge('tests_manual_smoke', 'Number of manual smoke tests',
 
 
 def update_metrics():
-    collector = QaseCollector('https://api.qase.io', EnvVars().qase_api_token, 'MRCQA')
-    new_tests_automated_smoke = collector.get_number_of_test_cases(type='smoke', status='actual', automation='automated')
+    qase_collector = QaseCollector('https://api.qase.io', EnvVars().qase_api_token, 'MRCQA')
+    new_tests_automated_smoke = qase_collector.get_number_of_test_cases(type='smoke', status='actual', automation='automated')
     tests_automated_smoke.set(new_tests_automated_smoke)
-    new_tests_manual_smoke = collector.get_number_of_test_cases(type='smoke', status='actual', automation='is-not-automated,to-be-automated')
+    new_tests_manual_smoke = qase_collector.get_number_of_test_cases(type='smoke', status='actual', automation='is-not-automated,to-be-automated')
     tests_manual_smoke.set(new_tests_manual_smoke)
 
 

@@ -5,6 +5,12 @@ services:
     container_name: python-metrics-service
     ports:
       - "8000:8000"
+    environment:
+      - JIRA_EMAIL=value
+      - JIRA_API_TOKEN=value
+      - QASE_API_TOKEN=value
+      - GITHUB_TOKEN=value
+      - GITHUB_REPO=value
     networks:
       - monitoring
 
