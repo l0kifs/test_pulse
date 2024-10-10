@@ -2,7 +2,7 @@ global:
   scrape_interval: 30s
 
 scrape_configs:
-  - job_name: 'python-service'
+  - job_name: 'python-metrics-service'
     scrape_interval: 30s
     static_configs:
       - targets: ['python-metrics-service:8000']

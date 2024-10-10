@@ -3,7 +3,7 @@
 
 version: '3'
 services:
-  python-service:
+  python-metrics-service:
     build: ./app
     container_name: test-puls-python-metrics-service
     restart: unless-stopped
