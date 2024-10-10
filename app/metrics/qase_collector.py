@@ -65,6 +65,32 @@ class QaseCollector:
         data = response.json()
         return data
     
+    def get_all_test_cases(
+        self,
+        type: str | None = None,
+        status: str | None = None,
+        automation: str | None = None,
+    ) -> list:
+        max_results = 100
+        start_result = 0
+        number_of_test_cases = self.get_number_of_test_cases(
+            type=type,
+            status=status,
+            automation=automation
+        )
+        all_test_cases = []
+        while start_result < number_of_test_cases:
+            data = self._get_test_cases(
+                type=type,
+                status=status,
+                automation=automation,
+                max_results=max_results,
+                start_result=start_result
+            )
+            all_test_cases += data['result']['entities']
+            start_result += max_results
+        return all_test_cases
+    
     def get_number_of_test_cases(
         self,
         type: str | None = None,

@@ -1,5 +1,5 @@
 # Docker-compose run command
-# docker-compose -p test_pulse up -d --build
+# docker-compose -p test_pulse up -d --build --remove-orphans
 
 version: '3'
 services:
@@ -10,6 +10,7 @@ services:
     ports:
       - "8000:8000"
     environment:
+      - PROMETHEUS_URL=http://prometheus:9090
       - JIRA_EMAIL=value
       - JIRA_API_TOKEN=value
       - QASE_API_TOKEN=value
