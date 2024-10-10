@@ -5,7 +5,7 @@ version: '3'
 services:
   python-service:
     build: ./app
-    container_name: python-metrics-service
+    container_name: test-puls-python-metrics-service
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -20,11 +20,16 @@ services:
 
   prometheus:
     image: prom/prometheus:latest
-    container_name: prometheus
+    container_name: test-puls-prometheus
     restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
+    expose:
+      - 9090
     ports:
       - "9090:9090"
     networks:
@@ -32,12 +37,12 @@ services:
 
   grafana:
     image: grafana/grafana:latest
-    container_name: grafana
+    container_name: test-puls-grafana
     restart: unless-stopped
     volumes:
       - grafana-data:/var/lib/grafana
     ports:
-      - "3000:3000"
+      - "9020:3000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     networks:
