@@ -23,4 +23,4 @@ if __name__ == "__main__":
     
     while True:
         update_metrics()
-        time.sleep(600)
+        time.sleep(3600)
