@@ -13,6 +13,7 @@ services:
       - PROMETHEUS_URL=http://prometheus:9090
       - JIRA_EMAIL=value
       - JIRA_API_TOKEN=value
+      - QASE_PROJECT_CODE=value
       - QASE_API_TOKEN=value
       - GITHUB_TOKEN=value
       - GITHUB_REPO=value
