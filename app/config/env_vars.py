@@ -5,6 +5,7 @@ class EnvVars(BaseSettings):
     prometheus_url: str
     jira_email: str
     jira_api_token: str
+    qase_project_code: str
     qase_api_token: str
     github_token: str
     github_repo: str
