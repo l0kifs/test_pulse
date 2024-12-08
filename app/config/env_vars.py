@@ -2,12 +2,14 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class EnvVars(BaseSettings):
-    prometheus_url: str
-    jira_email: str
-    jira_api_token: str
-    qase_project_code: str
-    qase_api_token: str
-    github_token: str
-    github_repo: str
+    PROMETHEUS_URL: str
+    JIRA_URL: str
+    JIRA_EMAIL: str
+    JIRA_API_TOKEN: str
+    QASE_URL: str
+    QASE_API_TOKEN: str
+    QASE_PROJECT_CODE: str
+    GITHUB_TOKEN: str
+    GITHUB_REPO: str
         
     model_config = SettingsConfigDict(env_file='../.env')

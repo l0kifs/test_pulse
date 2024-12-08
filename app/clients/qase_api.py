@@ -1,20 +1,40 @@
+from enum import Enum
+import logging
 import requests
 
 # Qase API documentation: https://developers.qase.io/reference/
 
 
-class QaseCollector:
+class CustomField(Enum):
+    AUTOMATION_TASK = 5
+    MANUAL_EXECUTION_TIME = 6
+    
+    def get_value(self, test_case: dict) -> str:
+        for custom_field in test_case['custom_fields']:
+            if custom_field['id'] == self.value:
+                return custom_field['value']
+        return ''
+    
+
+class AutomationStatus(Enum):
+    MANUAL = 0
+    AUTOMATED = 2
+    
+
+
+class QaseAPI:
     def __init__(
         self,
         base_url: str,
         api_token: str,
         project_code: str
     ):
-        self.base_url = base_url
-        self.api_token = api_token
-        self.project_code = project_code
-        self.headers = {
-            'Token': self.api_token,
+        self._log = logging.getLogger(__name__)
+        self._base_url = base_url
+        self._api_token = api_token
+        self._project_code = project_code
+        self._headers = {
+            'Token': self._api_token,
             'Content-Type': 'application/json'
         }
 
@@ -23,14 +43,14 @@ class QaseCollector:
             max_results: int = 10,
             start_result: int = 0
     ) -> dict:
-        url = f'{self.base_url}/v1/result/{self.project_code}'
+        url = f'{self._base_url}/v1/result/{self._project_code}'
         params = {
             "limit": str(max_results),
             "offset": str(start_result)
         }
         response = requests.get(
             url=url, 
-            headers=self.headers, 
+            headers=self._headers, 
             params=params
         )
         response.raise_for_status()
@@ -45,7 +65,7 @@ class QaseCollector:
         max_results: int = 10,
         start_result: int = 0
     ) -> dict:
-        url = f'{self.base_url}/v1/case/{self.project_code}'
+        url = f'{self._base_url}/v1/case/{self._project_code}'
         params = {
             "limit": str(max_results),
             "offset": str(start_result)
@@ -58,7 +78,7 @@ class QaseCollector:
             params['automation'] = automation
         response = requests.get(
             url=url, 
-            headers=self.headers, 
+            headers=self._headers, 
             params=params
         )
         response.raise_for_status()
@@ -104,3 +124,35 @@ class QaseCollector:
             automation=automation
         )
         return data['result']['filtered']
+    
+    def get_test_case(
+        self,
+        case_id: int
+    ) -> dict:
+        url = f'{self._base_url}/v1/case/{self._project_code}/{case_id}'
+        response = requests.get(
+            url=url, 
+            headers=self._headers
+        )
+        response.raise_for_status()
+        return response.json()['result']
+    
+    def update_test_case(
+        self,
+        case_id: int,
+        custom_fields: dict[CustomField, str]
+    ) -> dict:
+        url = f'{self._base_url}/v1/case/{self._project_code}/{case_id}'
+        payload = {}
+        if custom_fields:
+            payload['custom_field'] = {
+                str(custom_field.value): value
+                for custom_field, value in custom_fields.items()
+            }
+        response = requests.patch(
+            url=url, 
+            headers=self._headers, 
+            json=payload
+        )
+        response.raise_for_status()
+        return response.json()

@@ -11,8 +11,10 @@ services:
       - "8000:8000"
     environment:
       - PROMETHEUS_URL=http://prometheus:9090
+      - JIRA_URL=https://company_name.atlassian.net
       - JIRA_EMAIL=value
       - JIRA_API_TOKEN=value
+      - QASE_URL=https://api.qase.io
       - QASE_PROJECT_CODE=value
       - QASE_API_TOKEN=value
       - GITHUB_TOKEN=value
