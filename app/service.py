@@ -1,20 +1,17 @@
 from prometheus_client import start_http_server, Gauge, CollectorRegistry
 import time
 
-from config.env_vars import EnvVars
-from metrics.qase_collector import QaseCollector
+from metrics.metrics import get_number_of_smoke_tests
+
 
 registry = CollectorRegistry()
-tests_automated_smoke = Gauge('tests_automated_smoke', 'Number of automated smoke tests', registry=registry)
-tests_manual_smoke = Gauge('tests_manual_smoke', 'Number of manual smoke tests', registry=registry)
+automated_smoke_tests = Gauge('automated_smoke_tests', 'Number of automated smoke tests', registry=registry)
+manual_smoke_tests = Gauge('manual_smoke_tests', 'Number of manual smoke tests', registry=registry)
 
 
 def update_metrics():
-    qase_collector = QaseCollector('https://api.qase.io', EnvVars().qase_api_token, EnvVars().qase_project_code)
-    new_tests_automated_smoke = qase_collector.get_number_of_test_cases(type='smoke', status='actual', automation='automated')
-    tests_automated_smoke.set(new_tests_automated_smoke)
-    new_tests_manual_smoke = qase_collector.get_number_of_test_cases(type='smoke', status='actual', automation='is-not-automated,to-be-automated')
-    tests_manual_smoke.set(new_tests_manual_smoke)
+    automated_smoke_tests.set(get_number_of_smoke_tests(automated=True))
+    manual_smoke_tests.set(get_number_of_smoke_tests(automated=False))
 
 
 if __name__ == "__main__":
@@ -23,4 +20,4 @@ if __name__ == "__main__":
     
     while True:
         update_metrics()
-        time.sleep(3600)
+        time.sleep(1800)
